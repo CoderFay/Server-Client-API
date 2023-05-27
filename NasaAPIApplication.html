@@ -1,0 +1,103 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>NASA API</title>
+    <style>
+      .apod {
+        display: flex;
+        background-color: #ccc ;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        border: 1px solid black;
+        padding: 20px;
+        opacity: 0.7;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      .apod img {
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 20px;
+      }
+      .apod p {
+        text-align: justify;
+        line-height: 1.5;
+      }
+      .body {
+         background-image: url(19943.jpg);
+         background-repeat: no-repeat;
+         background-size: cover;
+         background-attachment: fixed;
+      }
+      .texts {
+        color: #ccc;
+        text-align: center;
+      }
+      .button{
+        width: 75px;
+        height: 30px;
+        border: none;
+        outline: none;
+        background: #2f2f2f;
+        color: #fff;
+        font-size: 15px;
+        border-radius: 40px;
+        text-align: center;
+        box-shadow: 0 6px 20px -5px rgba(0,0,0,0.4);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    input[type="date"]{
+      background-color: #ccc;
+      padding: 10px;
+      position: absolute;
+      transform: translate(-50%,-50%);
+      font-family: "Roboto Mono",monospace;
+      color: black;
+      font-size: 18px;
+      border: none;
+      outline: none;
+      border-radius: 5px;
+  }
+    
+    </style>
+  </head>
+  <body class="body" >
+    <div class="container">
+      <nav>
+          <img src="R.png" alt="logo" class="logo"style="cursor:pointer;" width="120px" height="100px" >
+          </nav></div>
+    <h1 class="texts">NASA  API</h1>
+    <form class="texts">
+      <label for="date">Enter a date:</label><br><br><br>
+      <input type="date" id="date" name="date" placeholder="(YYYY-MM-DD)" required="required">
+      <br><br>
+      <input class="button" type="button" value="Submit" onclick="getAPOD();">
+    </form>
+    <div id="response" class="apod" ></div>
+    <script>
+      // Make a GET request to the NASA APOD API and display the response in the HTML page
+      function getAPOD() {
+        var date = document.getElementById("date").value; // Replace with the date you want to retrieve
+        var api_url = "https://api.nasa.gov/planetary/apod?api_key=YOUR_API_KEY_HERE&date=" + date; // Replace YOUR_API_KEY_HERE with your own API key
+        fetch(api_url)
+          .then(response => response.json())
+          .then(data => {
+            var image_elem = document.createElement("img");
+            image_elem.src = data.url;
+            image_elem.alt = data.title;
+            var explanation_elem = document.createElement("p");
+            explanation_elem.textContent = data.explanation;
+            var response_elem = document.getElementById("response");
+            response_elem.innerHTML = "";
+            response_elem.appendChild(image_elem);
+            response_elem.appendChild(explanation_elem);
+            response_elem.classList.add("apod");
+          })
+          .catch(error => console.error(error));
+      }
+    </script>
+  </body>
+</html> 
